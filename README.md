@@ -1,4 +1,4 @@
-**Dockerized Ansible Training Lab**
+# Dockerized Ansible Training Lab
 
 _Author: Arnab Sinha_
 
