@@ -22,7 +22,6 @@
       tags:
         - baseline
 
-#backup existing ssh config file in a safe directory 
     - name: Backup existing SSH config
       copy: src=/etc/ssh/ssh_config dest=/etc/ssh/ssh_config_backup
       tags:
@@ -37,7 +36,6 @@
         - group
         - baseline
 
-#create user, user home  with default password and ssh keys - loop
     - name: Create user, home with default password, ssh keys - loop
       user: 
           name={{ item }}
@@ -75,14 +73,12 @@
       tags:
         - baseline
 
-#create docker network
     - name: Create individual docker networks
       shell: docker network create -d bridge --internal --subnet=172.{{ item }}.0.0/16 ansiblelabuser_nw_{{ item }}
       with_sequence: start=1 end={{ users }}
       tags:
         - docker_network
           
-#create master container
     - name: Build Master and Slave Images (Module)
       docker_image:
         path: "{{ item }}" 
@@ -119,7 +115,6 @@
       tags:
         - remove_users
 
-
     - name: Remove ansible lab user group
       group:
         name=ansiblelab
@@ -127,8 +122,6 @@
       tags:
         - remove_group
 
-
-#revert the sshd config file
     - name: Unlock sshd_config
       command: chattr -i /etc/ssh/sshd_config
       changed_when: yes

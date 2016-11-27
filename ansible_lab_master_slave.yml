@@ -1,5 +1,4 @@
 ---
-#start master containers (master not linking to slaves can be only handled by private nws)
 #  - name: Start Master Container (CLI)
 #    shell: docker run -d -P --name=master-{{ master_name }} -h master-{{ master_name }}  ansible_lab/master:latest
 #    register: run_master
@@ -13,7 +12,6 @@
 #      - startup
 #      - start_master
 
-#start master containers (master not linking to slaves can be only handled by private nws)
   - name: Start Master Container (Module)
     docker_container:
       name: master-{{ master_name }}
@@ -32,8 +30,6 @@
       - startup
       - start_master
     
-
-#start slave containers
 #  - name: Start Slave Container (CLI)
 #    shell: docker run -d -P --name=master-{{ master_name }}-slave-{{ item }} -h master-{{ master_name }}-slave-{{ item }} ansible_lab/slave:latest
 #    register: run_slave
@@ -48,7 +44,6 @@
 #      - startup
 #      - start_slave
 
-#start slave containers
   - name: Start Slave Container (Module)
     docker_container:
       name: master-{{ master_name }}-slave-{{ item }}
@@ -62,8 +57,7 @@
       - startup
       - start_slave
 
-#copy id_rsa of user to master container
-  - name: Copy SSH Keys to Master
+  - name: Copy SSH Keys to Master (id_rsa)
     shell: docker cp /home/ansiblelabuser{{ master_name }}/.ssh/id_rsa master-{{ master_name }}:/root/.ssh/id_rsa
     tags:
       - startup
@@ -75,15 +69,13 @@
       - startup
       - ssh_key_exchange
 
-#copy id_rsa.pub of user to slave container
-  - name: Copy SSH Keys to Slaves
+  - name: Copy SSH Keys to Slaves (id_rsa.pub)
     shell: docker cp /home/ansiblelabuser{{ master_name }}/.ssh/id_rsa.pub master-{{ master_name }}-slave-{{ item }}:/root/.ssh/authorized_keys
     with_sequence: start=1 end={{ slaves }}
     tags:
       - startup
       - ssh_key_exchange
 
-#remove slave containers
   - name: Remove Slave Containers
     shell: docker stop -t=0  master-{{ master_name }}-slave-{{ item }} && docker rm -f master-{{ master_name }}-slave-{{ item }}
     register: stop_slave
@@ -98,7 +90,6 @@
       - shutdown
       - remove_slaves
 
-#remove master containers
   - name: Remove Master Containers
     shell: docker stop -t=0 master-{{ master_name }} && docker rm -f master-{{ master_name }}
     register: stop_master
