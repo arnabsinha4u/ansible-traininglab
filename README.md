@@ -1,4 +1,5 @@
 # Dockerized Ansible Training Lab
+Dockerized Ansible Training Lab to train multiple people/get trained on Ansible using multiple containerized hosts
 
 ### Lab Setup Representation
 

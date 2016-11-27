@@ -18,13 +18,14 @@
         - baseline
 
     - name: Start Docker Engine
-      service: name=docker state=started enabled=yes
+      service: name=docker state=started 
       tags:
         - baseline
 
     - name: Backup existing SSH config
       copy: src=/etc/ssh/ssh_config dest=/etc/ssh/ssh_config_backup
       tags:
+        - ssh
         - backup_ssh
         - baseline
 
@@ -56,6 +57,7 @@
       command: chattr -i /etc/ssh/sshd_config
       changed_when: yes
       tags:
+        - ssh
         - baseline
 
     - name: insert ansible in sshd allowedusers
@@ -65,12 +67,14 @@
         replace: '\1 {{ item }}'
       with_sequence: start=1 end={{ users }} format=ansiblelabuser%d
       tags:
+        - ssh
         - baseline
 
     - name: lock sshd_config
       command: chattr +i /etc/ssh/sshd_config
       changed_when: yes
       tags:
+        - ssh
         - baseline
 
     - name: Create individual docker networks
@@ -90,6 +94,7 @@
         - master
         - slave
       tags:
+        - m_startup
         - m_build_images
 
     - name: Build Master and Slave Images (CLI)
@@ -98,6 +103,7 @@
         - master
         - slave
       tags:
+        - cli_startup
         - cli_build_images
 
     - include: ansible_lab_master_slave.yml
@@ -114,6 +120,7 @@
       with_sequence: start=1 end={{ users }} format=ansiblelabuser%d
       tags:
         - remove_users
+        - remove_baseline
 
     - name: Remove ansible lab user group
       group:
@@ -121,11 +128,13 @@
         state=absent
       tags:
         - remove_group
+        - remove_baseline
 
     - name: Unlock sshd_config
       command: chattr -i /etc/ssh/sshd_config
       changed_when: yes
       tags:
+        - revert_ssh
         - remove_baseline
 
     - name: Delete ansible lab users from sshd allowedusers
@@ -135,10 +144,12 @@
         replace: ''
       with_sequence: start=1 end={{ users }} format=ansiblelabuser%d
       tags:
+        - revert_ssh
         - remove_baseline
 
     - name: Lock sshd_config
       command: chattr +i /etc/ssh/sshd_config
       changed_when: yes
       tags:
+        - revert_ssh
         - remove_baseline
