@@ -19,12 +19,6 @@
       tags:
         - baseline
 
-    - name: Pull Base Image
-      shell: docker pull --disable-content-trust=true centos:latest
-      tags:
-        - cli_base_image
-        - baseline
-
 #backup existing ssh config file in a safe directory 
     - name: Backup existing SSH config
       copy: src=/etc/ssh/ssh_config dest=/etc/ssh/ssh_config_backup
@@ -78,8 +72,6 @@
       tags:
         - baseline
 
-#    - name: Enable agent forwarding for SSH
-            
 #create docker network
     - name: Create individual docker networks
       shell: docker network create -d bridge --internal --subnet=172.{{ item }}.0.0/16 ansiblelabuser_nw_{{ item }}
