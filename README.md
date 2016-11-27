@@ -43,6 +43,12 @@ like ansiblelabuser1     |                    +---------------------------------
                                               |                                                                                                 |
                                               +-------------------------------------------------------------------------------------------------+
 
+Key Exchange Implementation:
+Each user has got its own public and private SSH keys. 
+These are generated and stored during the user creation on the host.
+The public and private SSH keys of users are copied to their respective master containers.
+Public keys in of the master are then copied over to their respective slave containers.
+
 ```
 
 
