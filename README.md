@@ -4,7 +4,7 @@ Dockerized Ansible Training Lab to train multiple people/get trained on Ansible 
 ### How To's:
 
 ####Starting up a lab:
-Bootstrap host and Startup Lab (creates 1 ansiblelabuser, 1 Master and 1 Slave)
+Bootstrap host and Startup Lab (Default settings: creates 1 ansiblelabuser, 1 Master and 1 Slave)
 ```
 ./ansible_lab.yml --tags=baseline,m_startup
 ```
@@ -32,7 +32,7 @@ master-1-slave-2 for master-1 - 172.17.0.4
 
 
 ####Shutdown a running lab:
-Simple Shutdown of Lab
+Simple Shutdown of Lab (Default settings: removes 1 ansiblelabuser, 1 Master and 1 Slave)
 ```
 ./ansible_lab.yml --tags=remove_baseline,cli_shutdown
 ```
