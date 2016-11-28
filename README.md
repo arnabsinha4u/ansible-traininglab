@@ -2,13 +2,20 @@
 Dockerized Ansible Training Lab to train multiple people/get trained on Ansible using multiple containerized hosts
 
 ### How To's:
+System already baseline, just startup the lab with defaults (1 ansiblelabuser, 1 Master and 1 Slave)
+```
+./ansible_lab.yml --tags=users,group,m_startup
+```
+
 
 ### Available Functionalities:
 Tags of Ansible has been leveraged to offer various kinds of functionalities to suit your requirements.
 
 Note:
+
 Tags as m_ mean those tasks are using the Ansible Docker Module (will work iff Ansible dependencies for using the Docker module of Ansible is installed)
 Tags as cli_ mean those tasks are using the Command Line (CLI of Docker)
+
 
 Available Tags:
 ---
