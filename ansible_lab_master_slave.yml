@@ -10,7 +10,6 @@
       - "run_master.rc == 0"
     tags:
       - cli_startup
-      - cli_start_master
 
   - name: Start Master Container (Module)
     docker_container:
@@ -21,7 +20,6 @@
       published_ports: all
     tags:
       - m_startup
-      - m_start_master
 
 
   - name: SSH forwarding into bashrc
@@ -29,8 +27,6 @@
     tags:
       - m_startup
       - cli_startup
-      - m_start_master
-      - cli_start_master
     
   - name: Start Slave Container (CLI)
     shell: docker run -d -P --name=master-{{ master_name }}-slave-{{ item }} -h master-{{ master_name }}-slave-{{ item }} ansible_lab/slave:latest
@@ -44,7 +40,6 @@
     with_sequence: start=1 end={{ slaves }} 
     tags:
       - cli_startup
-      - cli_start_slave
 
   - name: Start Slave Container (Module)
     docker_container:
@@ -57,7 +52,6 @@
     with_sequence: start=1 end={{ slaves }} 
     tags:
       - m_startup
-      - m_start_slave
 
   - name: Copy SSH Keys to Master (id_rsa)
     shell: docker cp /home/ansiblelabuser{{ master_name }}/.ssh/id_rsa master-{{ master_name }}:/root/.ssh/id_rsa
@@ -65,8 +59,6 @@
       - m_startup
       - cli_startup
       - ssh_key_exchange
-      - m_start_master
-      - cli_start_master
 
   - name: Copy SSH Keys to Master (public)
     shell: docker cp /home/ansiblelabuser{{ master_name }}/.ssh/id_rsa.pub master-{{ master_name }}:/root/.ssh/authorized_keys
@@ -74,8 +66,6 @@
       - m_startup
       - cli_startup
       - ssh_key_exchange
-      - m_start_master
-      - cli_start_master
 
   - name: Copy SSH Keys to Slaves (id_rsa.pub)
     shell: docker cp /home/ansiblelabuser{{ master_name }}/.ssh/id_rsa.pub master-{{ master_name }}-slave-{{ item }}:/root/.ssh/authorized_keys
@@ -84,10 +74,6 @@
       - m_startup
       - cli_startup
       - ssh_key_exchange
-      - m_start_master
-      - cli_start_master
-      - cli_start_slave
-      - m_start_slave
 
   - name: Remove Slave Containers
     shell: docker stop -t=0  master-{{ master_name }}-slave-{{ item }} && docker rm -f master-{{ master_name }}-slave-{{ item }}
