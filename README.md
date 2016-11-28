@@ -2,9 +2,22 @@
 Dockerized Ansible Training Lab to train multiple people/get trained on Ansible using multiple containerized hosts
 
 ### How To's:
-System already baseline, just startup the lab with defaults (1 ansiblelabuser, 1 Master and 1 Slave)
+
+####Starting up a lab:
+System already baselined, just startup the lab with defaults (creates 1 ansiblelabuser, 1 Master and 1 Slave)
 ```
 ./ansible_lab.yml --tags=users,group,m_startup
+```
+
+System already baselined, startup the lab the specific number of users and its respective slaves (creates 2 ansiblelabusers, 2 Masters (1 master per user) and 3 slaves per master)
+```
+./ansible_lab.yml --tags=users,group,m_startup ansible_lab.yml -e users=2 -e slaves=3
+```
+
+####Shutdown a running lab:
+Shutdown the lab with defaults (removes 1 ansiblelabuser, 1 Master and 1 Slave containers)
+```
+./ansible_lab.yml --tags=remove_users,remove_group,cli_shutdown
 ```
 
 
@@ -12,13 +25,11 @@ System already baseline, just startup the lab with defaults (1 ansiblelabuser, 1
 Tags of Ansible has been leveraged to offer various kinds of functionalities to suit your requirements.
 
 Note:
-
 Tags as m_ mean those tasks are using the Ansible Docker Module (will work iff Ansible dependencies for using the Docker module of Ansible is installed)
 Tags as cli_ mean those tasks are using the Command Line (CLI of Docker)
 
 
-Available Tags:
----
+###Available Tags:
 * baseline
   * Allows you to bootstrap your machine with basic dependencies of running Docker and Ansible dependencies for using the Docker module of Ansible
   * Start Docker engine
@@ -40,16 +51,8 @@ Available Tags:
 
 * cli_shutdown - Stop and Remove the Master and Containers using the Command Line (CLI of Docker)
 
-* m_start_master / cli_start_master 
-  * Start Master Containers
-  * Deploy config to forward SSH connection of ansiblelabuser's to their respective master containers
-  * Distribute SSH Keys of Master to the respective slaves
-* m_start_slave / cli_start_slave
-  * Start Slave Containers
-  * Distribute SSH Keys of Master to the respective slaves
-
 * remove_master - Removes Master Containers
-* remove_slaves - Remove Slave Containers
+* remove_slaves - Removes Slave Containers
 
 * group - Create a group called as ansiblelab 
 * users
