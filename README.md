@@ -4,6 +4,11 @@ Dockerized Ansible Training Lab to train multiple people/get trained on Ansible 
 ### How To's:
 
 ####Starting up a lab:
+Bootstrap host and Startup Lab (creates 1 ansiblelabuser, 1 Master and 1 Slave)
+```
+./ansible_lab.yml --tags=baseline,m_startup
+```
+
 System already baselined, just startup the lab with defaults (creates 1 ansiblelabuser, 1 Master and 1 Slave)
 ```
 ./ansible_lab.yml --tags=users,group,m_startup
@@ -27,6 +32,11 @@ master-1-slave-2 for master-1 - 172.17.0.4
 
 
 ####Shutdown a running lab:
+Simple Shutdown of Lab
+```
+./ansible_lab.yml --tags=remove_baseline,cli_shutdown
+```
+
 Shutdown the lab with defaults (removes 1 ansiblelabuser, 1 Master and 1 Slave containers)
 ```
 ./ansible_lab.yml --tags=remove_users,remove_group,cli_shutdown
@@ -62,6 +72,7 @@ Note:
 * remove_baseline
   * Remove the created ansiblelab group and ansiblelabuser's attached to that group
   * Revert the SSHD config to the original state
+  * Note: Does to revert docker and its dependencies and remove the Docker images
 
 * m_build_images - Build the lab docker images 
 * cli_build_images - Build the lab docker images 
