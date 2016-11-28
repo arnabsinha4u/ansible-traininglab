@@ -15,14 +15,14 @@ Scaling up: System already baselined, startup the lab the specific number of use
 ```
 
 #### Access to the users and slaves:
-1) ansiblelabuser (always created in sequence of numbers) to login into the host as ssh ansiblelabuser1@hostname
-2) Accept the host checking
-3) Once accecpted, will be forwarded automatically into the respective master container
-4) Can access the slaves by ssh IP-Address of the slaves (the IP address of the slaves will be 1 increment each to the master IP address[ifconfig on master will reveal the ip address])
+1) ansiblelabuser (always created in sequence of numbers) to login into the host as ssh ansiblelabuser1@hostname  
+2) Accept the host checking  
+3) Once accecpted, will be forwarded automatically into the respective master container  
+4) Can access the slaves by ssh IP-Address of the slaves (the IP address of the slaves will be 1 increment each to the master IP address[ifconfig on master will reveal the ip address])  
 
-Eg:
-master-1 ip address - 172.17.0.2
-master-1-slave-1 for master-1 - 172.17.0.3
+Eg:  
+master-1 ip address - 172.17.0.2  
+master-1-slave-1 for master-1 - 172.17.0.3  
 master-1-slave-2 for master-1 - 172.17.0.4
 
 
@@ -48,8 +48,8 @@ Note:
 Tags of Ansible has been leveraged to offer various kinds of functionalities to suit your requirements.
 
 Note:
-Tags as m_ mean those tasks are using the Ansible Docker Module (will work iff Ansible dependencies for using the Docker module of Ansible is installed)
-Tags as cli_ mean those tasks are using the Command Line (CLI of Docker)
+  * Tags as m_ mean those tasks are using the Ansible Docker Module (will work iff Ansible dependencies for using the Docker module of Ansible is installed)
+  * Tags as cli_ mean those tasks are using the Command Line (CLI of Docker)
 
 
 ###Available Tags:
