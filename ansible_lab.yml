@@ -58,6 +58,7 @@
       changed_when: yes
       tags:
         - ssh
+        - users
         - baseline
 
     - name: insert ansible in sshd allowedusers
@@ -68,6 +69,7 @@
       with_sequence: start=1 end={{ users }} format=ansiblelabuser%d
       tags:
         - ssh
+        - users
         - baseline
 
     - name: lock sshd_config
@@ -75,6 +77,7 @@
       changed_when: yes
       tags:
         - ssh
+        - users
         - baseline
 
     - name: Create individual docker networks
@@ -135,6 +138,7 @@
       changed_when: yes
       tags:
         - revert_ssh
+        - remove_users
         - remove_baseline
 
     - name: Delete ansible lab users from sshd allowedusers
@@ -145,6 +149,7 @@
       with_sequence: start=1 end={{ users }} format=ansiblelabuser%d
       tags:
         - revert_ssh
+        - remove_users
         - remove_baseline
 
     - name: Lock sshd_config
@@ -152,4 +157,5 @@
       changed_when: yes
       tags:
         - revert_ssh
+        - remove_users
         - remove_baseline
