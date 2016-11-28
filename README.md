@@ -1,7 +1,11 @@
 # Dockerized Ansible Training Lab
 Dockerized Ansible Training Lab to train multiple people/get trained on Ansible using multiple containerized hosts
 
+### How To's:
+---
+
 ### Available Functionalities:
+---
 Tags of Ansible has been leveraged to offer various kinds of functionalities to suit your requirements.
 
 Note:
@@ -9,6 +13,7 @@ Tags as m_ mean those tasks are using the Ansible Docker Module (will work iff A
 Tags as cli_ mean those tasks are using the Command Line (CLI of Docker)
 
 Available Tags:
+---
 * baseline
   * Allows you to bootstrap your machine with basic dependencies of running Docker and Ansible dependencies for using the Docker module of Ansible
   * Start Docker engine
@@ -67,10 +72,9 @@ Work In Progress (WIP):
 * m_shutdown
 * remove_images
 
-### How To's:
-
 
 ### Lab Setup Representation
+---
 
 ```
                                                                                        Host Machine
