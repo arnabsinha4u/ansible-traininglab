@@ -9,17 +9,40 @@ System already baselined, just startup the lab with defaults (creates 1 ansiblel
 ./ansible_lab.yml --tags=users,group,m_startup
 ```
 
-System already baselined, startup the lab the specific number of users and its respective slaves (creates 2 ansiblelabusers, 2 Masters (1 master per user) and 3 slaves per master)
+Scaling up: System already baselined, startup the lab the specific number of users and its respective slaves (creates 2 ansiblelabusers, 2 Masters (1 master per user) and 3 slaves per master)
 ```
 ./ansible_lab.yml --tags=users,group,m_startup ansible_lab.yml -e users=2 -e slaves=3
 ```
+
+#### Access to the users and slaves:
+1) ansiblelabuser (always created in sequence of numbers) to login into the host as ssh ansiblelabuser1@hostname
+2) Accept the host checking
+3) Once accecpted, will be forwarded automatically into the respective master container
+4) Can access the slaves by ssh IP-Address of the slaves (the IP address of the slaves will be 1 increment each to the master IP address[ifconfig on master will reveal the ip address])
+
+Eg:
+master-1 ip address - 172.17.0.2
+master-1-slave-1 for master-1 - 172.17.0.3
+master-1-slave-2 for master-1 - 172.17.0.4
+
 
 ####Shutdown a running lab:
 Shutdown the lab with defaults (removes 1 ansiblelabuser, 1 Master and 1 Slave containers)
 ```
 ./ansible_lab.yml --tags=remove_users,remove_group,cli_shutdown
 ```
+Scaling Down: Shutdown the lab partially (removes 1 ansiblelabuser, 1 Master and 2 Slave containers)
+```
+./ansible_lab.yml --tags=remove_users,cli_shutdown -e users=1 -e slaves=2
+```
 
+Details of the Tags explained in the next section and permutation and combination of the same can be used to scale up, scale down, cleanup.
+
+Note: 
+  * Users have to be created if scaling up.
+  * The count always starts with 1 while scaling up and scaling down
+  * Functionality of prefrential removal - Work In Progress (WIP)
+  * Access to slaves based on hostname - Work In Progress (WIP)
 
 ### Available Functionalities:
 Tags of Ansible has been leveraged to offer various kinds of functionalities to suit your requirements.
@@ -51,7 +74,7 @@ Tags as cli_ mean those tasks are using the Command Line (CLI of Docker)
 
 * cli_shutdown - Stop and Remove the Master and Containers using the Command Line (CLI of Docker)
 
-* remove_master - Removes Master Containers
+* remove_masters - Removes Master Containers
 * remove_slaves - Removes Slave Containers
 
 * group - Create a group called as ansiblelab 
