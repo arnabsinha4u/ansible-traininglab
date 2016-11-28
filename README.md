@@ -2,10 +2,8 @@
 Dockerized Ansible Training Lab to train multiple people/get trained on Ansible using multiple containerized hosts
 
 ### How To's:
----
 
 ### Available Functionalities:
----
 Tags of Ansible has been leveraged to offer various kinds of functionalities to suit your requirements.
 
 Note:
@@ -33,22 +31,17 @@ Available Tags:
   * Deploy config to forward SSH connection of ansiblelabuser's to their respective master containers
   * Distribute SSH Keys of Master to the respective slaves
 
-* cli_shutdown
-  * Stop and Remove the Master and Containers using the Command Line (CLI of Docker)
+* cli_shutdown - Stop and Remove the Master and Containers using the Command Line (CLI of Docker)
 
 * m_start_master / cli_start_master 
   * Start Master Containers
   * Deploy config to forward SSH connection of ansiblelabuser's to their respective master containers
   * Distribute SSH Keys of Master to the respective slaves
-
 * m_start_slave / cli_start_slave
   * Start Slave Containers
   * Distribute SSH Keys of Master to the respective slaves
 
-* cli_shutdown - Removes Master and Slave Containers
-
 * remove_master - Removes Master Containers
-
 * remove_slaves - Remove Slave Containers
 
 * group - Create a group called as ansiblelab 
@@ -59,13 +52,10 @@ Available Tags:
 * remove_users
   * Removes the ansiblelabuser's
   * Removes them from the SSHD config
-
 * remove_group - Removes the group called as ansiblelab
 
 * ssh_key_exchange - Re/Initiate SSH key exchange amongst Masters and Slaves
-
 * ssh - Manage SSHD config to add new users if its protected by any config management tool
-
 * revert_ssh - Revert the SSHD config to the original state
 
 Work In Progress (WIP):
@@ -74,7 +64,6 @@ Work In Progress (WIP):
 
 
 ### Lab Setup Representation
----
 
 ```
                                                                                        Host Machine
