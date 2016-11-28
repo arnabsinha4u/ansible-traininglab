@@ -1,6 +1,20 @@
 # Dockerized Ansible Training Lab
 Dockerized Ansible Training Lab to train multiple people/get trained on Ansible using multiple containerized hosts
 
+### Available Functionalities:
+Tags of Ansible has been leveraged to offer various kinds of functionalities to suit your requirements.
+
+Available Tags:
+* baseline
+  * Allows you to bootstrap your machine with basic dependencies of running Docker and Ansible dependencies for using the Docker module of Ansible
+  * Start Docker engine
+  * Create ansiblelab group and ansiblelabuser's attached to that group
+  * Manage SSHD config to add new users if its protected by any config management tool
+
+
+### How To's:
+
+
 ### Lab Setup Representation
 
 ```
