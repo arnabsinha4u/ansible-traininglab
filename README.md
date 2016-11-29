@@ -16,7 +16,7 @@ System already baselined, just startup the lab with defaults (creates 1 ansiblel
 
 Scaling up: System already baselined, startup the lab the specific number of users and its respective slaves (creates 2 ansiblelabusers, 2 Masters (1 master per user) and 3 slaves per master)
 ```
-./ansible_lab.yml --tags=users,group,m_startup ansible_lab.yml -e users=2 -e slaves=3
+./ansible_lab.yml --tags=users,group,m_startup -e users=2 -e slaves=3
 ```
 
 #### Access to the users and slaves:
