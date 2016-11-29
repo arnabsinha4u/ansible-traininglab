@@ -1,0 +1,15 @@
+ansible>=2.2.0.0
+docker-py>=1.10.6
+paramiko
+jinja2
+PyYAML
+setuptools
+pycrypto>=2.6
+docker-pycreds>=0.2.1
+ipaddress>=1.0.16
+requests!=2.11.0,>=2.5.2
+six>=1.4.0
+backports.ssl-match-hostname>=3.5
+websocket-client>=0.32.0
+ecdsa>=0.11
+markupsafe
