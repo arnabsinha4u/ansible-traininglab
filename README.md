@@ -3,6 +3,10 @@ Dockerized Ansible Training Lab to train multiple people/get trained on Ansible 
 
 ### How To's:
 
+####Requirements
+Install and start the docker daemon first: yum install -y docker && systemctl start docker.
+You need python-pip to install the requirements.txt.
+
 ####Starting up a lab:
 Bootstrap host and Startup Lab (Default settings: creates 1 ansiblelabuser, 1 Master and 1 Slave)
 ```
@@ -20,14 +24,14 @@ Scaling up: System already baselined, startup the lab the specific number of use
 ```
 
 #### Access to the users and slaves:
-1) ansiblelabuser (always created in sequence of numbers) to login into the host as ssh ansiblelabuser1@hostname  
-2) Accept the host checking  
-3) Once accecpted, will be forwarded automatically into the respective master container  
-4) Can access the slaves by ssh IP-Address of the slaves (the IP address of the slaves will be 1 increment each to the master IP address[ifconfig on master will reveal the ip address])  
+1) ansiblelabuser (always created in sequence of numbers) to login into the host as ssh ansiblelabuser1@hostname
+2) Accept the host checking
+3) Once accecpted, will be forwarded automatically into the respective master container
+4) Can access the slaves by ssh IP-Address of the slaves (the IP address of the slaves will be 1 increment each to the master IP address[ifconfig on master will reveal the ip address])
 
-Eg:  
-master-1 ip address - 172.17.0.2  
-master-1-slave-1 for master-1 - 172.17.0.3  
+Eg:
+master-1 ip address - 172.17.0.2
+master-1-slave-1 for master-1 - 172.17.0.3
 master-1-slave-2 for master-1 - 172.17.0.4
 
 
@@ -48,7 +52,7 @@ Scaling Down: Shutdown the lab partially (removes 1 ansiblelabuser, 1 Master and
 
 Details of the Tags explained in the next section and permutation and combination of the same can be used to scale up, scale down, cleanup.
 
-Note: 
+Note:
   * Users have to be created if scaling up.
   * The count always starts with 1 while scaling up and scaling down
   * Functionality of prefrential removal - Work In Progress (WIP)
@@ -74,12 +78,12 @@ Note:
   * Revert the SSHD config to the original state
   * Note: Does to revert docker and its dependencies and remove the Docker images
 
-* m_build_images - Build the lab docker images 
-* cli_build_images - Build the lab docker images 
+* m_build_images - Build the lab docker images
+* cli_build_images - Build the lab docker images
 
-* m_startup / cli_startup 
-  * Build the lab docker images using the Ansible Docker module 
-  * Start Master and Slave Containers 
+* m_startup / cli_startup
+  * Build the lab docker images using the Ansible Docker module
+  * Start Master and Slave Containers
   * Deploy config to forward SSH connection of ansiblelabuser's to their respective master containers
   * Distribute SSH Keys of Master to the respective slaves
 
@@ -88,9 +92,9 @@ Note:
 * remove_masters - Removes Master Containers
 * remove_slaves - Removes Slave Containers
 
-* group - Create a group called as ansiblelab 
+* group - Create a group called as ansiblelab
 * users
-  * Creates ansiblelabuser's and attach them to the group called ansiblelab (will not work if group is not created/existing) 
+  * Creates ansiblelabuser's and attach them to the group called ansiblelab (will not work if group is not created/existing)
   * Adds them to the SSHD config
 
 * remove_users
@@ -151,7 +155,7 @@ like ansiblelabuser1     |                    +---------------------------------
                                               +-------------------------------------------------------------------------------------------------+
 
 Key Exchange Implementation:
-Each user has got its own public and private SSH keys. 
+Each user has got its own public and private SSH keys.
 These are generated and stored during the user creation on the host.
 The public and private SSH keys of users are copied to their respective master containers.
 Public keys in of the master are then copied over to their respective slave containers.
