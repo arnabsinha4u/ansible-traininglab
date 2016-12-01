@@ -4,8 +4,8 @@ Dockerized Ansible Training Lab to train multiple people/get trained on Ansible 
 ### How To's:
 
 ####Requirements
-Install and start the docker daemon first: yum install -y docker && systemctl start docker.
-You need python-pip to install the requirements.txt.
+You should have Ansible 2.2 or above. If the same is installed with dependencies, running the baseline tag will install other dependencies to run this lab.
+Details mentioned in the requirements.txt but not included in the playbook.
 
 ####Starting up a lab:
 Bootstrap host and Startup Lab (Default settings: creates 1 ansiblelabuser, 1 Master and 1 Slave)
