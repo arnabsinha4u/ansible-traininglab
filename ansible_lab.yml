@@ -85,8 +85,6 @@
       shell: docker network create -d bridge --internal --subnet={{ cidr }} ansiblelab_nw
       tags:
         - docker_network
-        - m_startup
-        - cli_startup
           
     - name: Build Master and Slave Images (Module)
       docker_image:
