@@ -6,6 +6,7 @@
   vars:
     users: 1
     slaves: 1
+    cidr: "172.18.1.1/20"
 
   tasks:
     - name: Baseline Machine 
@@ -80,11 +81,12 @@
         - users
         - baseline
 
-    - name: Create individual docker networks
-      shell: docker network create -d bridge --internal --subnet=172.{{ item }}.0.0/16 ansiblelabuser_nw_{{ item }}
-      with_sequence: start=1 end={{ users }}
+    - name: Create Docker network for ansiblelab (limiting to 4K containers approx)
+      shell: docker network create -d bridge --internal --subnet={{ cidr }} ansiblelab_nw
       tags:
         - docker_network
+        - m_startup
+        - cli_startup
           
     - name: Build Master and Slave Images (Module)
       docker_image:
