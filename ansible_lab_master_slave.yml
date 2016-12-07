@@ -75,7 +75,7 @@
       - cli_startup
       - ssh_key_exchange
 
-  - name: Remove Slave Containers
+  - name: Remove Slave Containers (CLI)
     shell: docker stop -t=0  master-{{ master_name }}-slave-{{ item }} && docker rm -f master-{{ master_name }}-slave-{{ item }}
     register: stop_slave
     failed_when:
@@ -87,9 +87,8 @@
     with_sequence: start=1 end={{ slaves }} 
     tags:
       - cli_shutdown
-      - remove_slaves
 
-  - name: Remove Master Containers
+  - name: Remove Master Containers (CLI)
     shell: docker stop -t=0 master-{{ master_name }} && docker rm -f master-{{ master_name }}
     register: stop_master
     failed_when:
@@ -100,4 +99,18 @@
       - "stop_master.rc == 0"
     tags:
       - cli_shutdown
-      - remove_masters
+
+  - name: Remove Slave Containers (Module)
+    docker_container:
+      name: master-{{ master_name }}-slave-{{ item }}
+      state: absent
+    with_sequence: start=1 end={{ slaves }}
+    tags:
+      - m_shutdown
+
+  - name: Remove Master Containers (Module)
+    docker_container:
+      name: master-{{ master_name }}
+      state: absent
+    tags:
+      - m_shutdown

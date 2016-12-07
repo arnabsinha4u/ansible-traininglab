@@ -23,11 +23,11 @@ Scaling up: System already baselined, startup the lab the specific number of use
 ./ansible_lab.yml --tags=users,group,m_startup -e users=2 -e slaves=3
 ```
 
-#### Access to the users and slaves:
-1) ansiblelabuser (always created in sequence of numbers) to login into the host as ssh ansiblelabuser1@hostname
-2) Accept the host checking
-3) Once accecpted, will be forwarded automatically into the respective master container
-4) Can access the slaves by ssh IP-Address of the slaves (the IP address of the slaves will be 1 increment each to the master IP address[ifconfig on master will reveal the ip address])
+#### Getting Started: Access to the users and slaves
+ * ansiblelabuser (always created in sequence of numbers) to login into the host as ssh ansiblelabuser1@hostname
+ * Accept the host checking
+ * Once accecpted, will be forwarded automatically into the respective master container
+ * Can access the slaves by ssh IP-Address of the slaves (the IP address of the slaves will be 1 increment each to the master IP address[ifconfig on master will reveal the ip address])
 
 Eg:
 master-1 ip address - 172.17.0.2
@@ -38,16 +38,16 @@ master-1-slave-2 for master-1 - 172.17.0.4
 ####Shutdown a running lab:
 Simple Shutdown of Lab (Default settings: removes 1 ansiblelabuser, 1 Master and 1 Slave)
 ```
-./ansible_lab.yml --tags=remove_baseline,cli_shutdown
+./ansible_lab.yml --tags=remove_baseline,m_shutdown
 ```
 
 Shutdown the lab with defaults (removes 1 ansiblelabuser, 1 Master and 1 Slave containers)
 ```
-./ansible_lab.yml --tags=remove_users,remove_group,cli_shutdown
+./ansible_lab.yml --tags=remove_users,remove_group,m_shutdown
 ```
 Scaling Down: Shutdown the lab partially (removes 1 ansiblelabuser, 1 Master and 2 Slave containers)
 ```
-./ansible_lab.yml --tags=remove_users,cli_shutdown -e users=1 -e slaves=2
+./ansible_lab.yml --tags=remove_users,m_shutdown -e users=1 -e slaves=2
 ```
 
 Details of the Tags explained in the next section and permutation and combination of the same can be used to scale up, scale down, cleanup.
@@ -87,10 +87,7 @@ Note:
   * Deploy config to forward SSH connection of ansiblelabuser's to their respective master containers
   * Distribute SSH Keys of Master to the respective slaves
 
-* cli_shutdown - Stop and Remove the Master and Containers using the Command Line (CLI of Docker)
-
-* remove_masters - Removes Master Containers
-* remove_slaves - Removes Slave Containers
+* cli_shutdown / m_shutdown - Stop and Remove the Master and Containers using the Command Line or Module
 
 * group - Create a group called as ansiblelab
 * users
@@ -107,7 +104,6 @@ Note:
 * revert_ssh - Revert the SSHD config to the original state
 
 Work In Progress (WIP):
-* m_shutdown
 * remove_images
 
 
