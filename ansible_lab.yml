@@ -10,7 +10,7 @@
 
   tasks:
     - name: Baseline Machine
-      yum: name={{ item }} state=latest
+      yum: name={{ item }} state=present
       with_items:
         - docker
         - python-pip
