@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/arnabsinha4u/ansible-traininglab.svg?branch=master)](https://travis-ci.org/arnabsinha4u/ansible-traininglab)
 # Dockerized Ansible Training Lab
 Dockerized Ansible Training Lab to train multiple people/get trained on Ansible using multiple containerized hosts
 
