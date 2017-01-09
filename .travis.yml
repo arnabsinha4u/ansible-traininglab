@@ -21,4 +21,4 @@ install:
 script:
   # Basic role syntax check
   - ansible-playbook ansible_lab.yml --syntax-check
-  - ansible-lint ansible_lab.yml
+  - ansible-lint -x ANSIBLE0012 ansible_lab.yml
