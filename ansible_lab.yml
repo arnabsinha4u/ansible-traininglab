@@ -1,15 +1,15 @@
 #!/usr/bin/env ansible-playbook
 
-- hosts: all 
+- hosts: all
   become: yes
-  gather_facts: yes 
+  gather_facts: yes
   vars:
     users: 1
     slaves: 1
     cidr: "172.18.1.1/20"
 
   tasks:
-    - name: Baseline Machine 
+    - name: Baseline Machine
       yum: name={{ item }} state=latest
       with_items:
         - docker
@@ -19,7 +19,7 @@
         - baseline
 
     - name: Start Docker Engine
-      service: name=docker state=started 
+      service: name=docker state=started
       tags:
         - baseline
 
@@ -39,13 +39,13 @@
         - baseline
 
     - name: Create user, home with default password, ssh keys - loop
-      user: 
+      user:
           name={{ item }}
           comment={{ item }}
           password={{ item | password_hash('sha512') }}
           home=/home/{{ item }}
-          group=ansiblelab 
-          generate_ssh_key=yes 
+          group=ansiblelab
+          generate_ssh_key=yes
           ssh_key_file=.ssh/id_rsa
           update_password=always
           state=present
@@ -82,14 +82,14 @@
         - baseline
 
     - name: Create Docker network for ansiblelab (limiting to 4K containers approx)
-      shell: docker network create -d bridge --internal --subnet={{ cidr }} ansiblelab_nw
+      command: docker network create -d bridge --internal --subnet={{ cidr }} ansiblelab_nw
       tags:
         - docker_network
-          
+
     - name: Build Master and Slave Images (Module)
       docker_image:
-        path: "{{ item }}" 
-        dockerfile: Dockerfile 
+        path: "{{ item }}"
+        dockerfile: Dockerfile
         state: present
         name: ansible_lab/{{ item }}
         tag: latest
@@ -101,7 +101,7 @@
         - m_build_images
 
     - name: Build Master and Slave Images (CLI)
-      shell: docker build -t ansible_lab/{{ item }}:latest {{ item }}
+      command: docker build -t ansible_lab/{{ item }}:latest {{ item }}
       with_items:
         - master
         - slave
@@ -115,7 +115,7 @@
         loop_var: master_name
 
     - name: Remove ansible lab users
-      user: 
+      user:
         name={{ item }}
         state=absent
         force=yes

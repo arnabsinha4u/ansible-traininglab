@@ -1,9 +1,9 @@
 ---
   - name: Start Master Container (CLI)
-    shell: docker run -d -P --name=master-{{ master_name }} -h master-{{ master_name }}  ansible_lab/master:latest
+    command: docker run -d -P --name=master-{{ master_name }} -h master-{{ master_name }}  ansible_lab/master:latest
     register: run_master
-    failed_when: 
-      - "'Conflict' not  in run_master.stderr" 
+    failed_when:
+      - "'Conflict' not  in run_master.stderr"
       - "run_master.rc != 0"
     changed_when:
       - "'No such container' not in run_master.stderr"
@@ -16,28 +16,28 @@
       name: master-{{ master_name }}
       hostname: master-{{ master_name }}
       image: ansible_lab/master:latest
-      state: started 
+      state: started
       published_ports: all
     tags:
       - m_startup
 
 
   - name: SSH forwarding into bashrc
-    shell: echo "ssh root@`docker exec master-{{ master_name }} hostname -I`;exit" >> /home/ansiblelabuser{{ master_name }}/.bashrc 
+    command: echo "ssh root@`docker exec master-{{ master_name }} hostname -I`;exit" >> /home/ansiblelabuser{{ master_name }}/.bashrc
     tags:
       - m_startup
       - cli_startup
-    
+
   - name: Start Slave Container (CLI)
-    shell: docker run -d -P --name=master-{{ master_name }}-slave-{{ item }} -h master-{{ master_name }}-slave-{{ item }} ansible_lab/slave:latest
+    command: docker run -d -P --name=master-{{ master_name }}-slave-{{ item }} -h master-{{ master_name }}-slave-{{ item }} ansible_lab/slave:latest
     register: run_slave
-    failed_when: 
-      - "'Conflict' not in run_slave.stderr" 
+    failed_when:
+      - "'Conflict' not in run_slave.stderr"
       - "run_slave.rc != 0"
     changed_when:
       - "'No such container' not in run_slave.stderr"
       - "run_slave.rc == 0"
-    with_sequence: start=1 end={{ slaves }} 
+    with_sequence: start=1 end={{ slaves }}
     tags:
       - cli_startup
 
@@ -46,29 +46,29 @@
       name: master-{{ master_name }}-slave-{{ item }}
       hostname: master-{{ master_name }}-slave-{{ item }}
       image: ansible_lab/slave:latest
-      state: started 
+      state: started
       published_ports: all
     register: run_slave
-    with_sequence: start=1 end={{ slaves }} 
+    with_sequence: start=1 end={{ slaves }}
     tags:
       - m_startup
 
   - name: Copy SSH Keys to Master (id_rsa)
-    shell: docker cp /home/ansiblelabuser{{ master_name }}/.ssh/id_rsa master-{{ master_name }}:/root/.ssh/id_rsa
+    command: docker cp /home/ansiblelabuser{{ master_name }}/.ssh/id_rsa master-{{ master_name }}:/root/.ssh/id_rsa
     tags:
       - m_startup
       - cli_startup
       - ssh_key_exchange
 
   - name: Copy SSH Keys to Master (public)
-    shell: docker cp /home/ansiblelabuser{{ master_name }}/.ssh/id_rsa.pub master-{{ master_name }}:/root/.ssh/authorized_keys
+    command: docker cp /home/ansiblelabuser{{ master_name }}/.ssh/id_rsa.pub master-{{ master_name }}:/root/.ssh/authorized_keys
     tags:
       - m_startup
       - cli_startup
       - ssh_key_exchange
 
   - name: Copy SSH Keys to Slaves (id_rsa.pub)
-    shell: docker cp /home/ansiblelabuser{{ master_name }}/.ssh/id_rsa.pub master-{{ master_name }}-slave-{{ item }}:/root/.ssh/authorized_keys
+    command: docker cp /home/ansiblelabuser{{ master_name }}/.ssh/id_rsa.pub master-{{ master_name }}-slave-{{ item }}:/root/.ssh/authorized_keys
     with_sequence: start=1 end={{ slaves }}
     tags:
       - m_startup
@@ -76,7 +76,7 @@
       - ssh_key_exchange
 
   - name: Remove Slave Containers (CLI)
-    shell: docker stop -t=0  master-{{ master_name }}-slave-{{ item }} && docker rm -f master-{{ master_name }}-slave-{{ item }}
+    command: docker stop -t=0  master-{{ master_name }}-slave-{{ item }} && docker rm -f master-{{ master_name }}-slave-{{ item }}
     register: stop_slave
     failed_when:
       - "'No such container' not in stop_slave.stderr"
@@ -84,12 +84,12 @@
     changed_when:
       - "'No such container' not in stop_slave.stderr"
       - "stop_slave.rc == 0"
-    with_sequence: start=1 end={{ slaves }} 
+    with_sequence: start=1 end={{ slaves }}
     tags:
       - cli_shutdown
 
   - name: Remove Master Containers (CLI)
-    shell: docker stop -t=0 master-{{ master_name }} && docker rm -f master-{{ master_name }}
+    command: docker stop -t=0 master-{{ master_name }} && docker rm -f master-{{ master_name }}
     register: stop_master
     failed_when:
       - "'No such container' not in stop_master.stderr"
