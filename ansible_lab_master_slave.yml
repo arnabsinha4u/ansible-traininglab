@@ -21,9 +21,18 @@
     tags:
       - m_startup
 
+  - name: Extract IP Address for Master Container
+    command: "docker inspect --format {% raw %} '{{ .NetworkSettings.IPAddress }}' {% endraw %} master-{{ master_name }}"
+    register: master_ip_address
+    tags:
+      - m_startup
+      - cli_startup
 
   - name: SSH forwarding into bashrc
-    command: echo "ssh root@`docker exec master-{{ master_name }} hostname -I`;exit" >> /home/ansiblelabuser{{ master_name }}/.bashrc
+    lineinfile:
+      dest: /home/ansiblelabuser{{ master_name }}/.bashrc
+      line: "ssh root@{{ master_ip_address.stdout }};exit"
+      state: present
     tags:
       - m_startup
       - cli_startup
