@@ -62,6 +62,23 @@
     tags:
       - m_startup
 
+  - name: Extract IP Address for Slave Container
+    command: "docker inspect --format {% raw %} '{{ .NetworkSettings.IPAddress }}' {% endraw %} master-{{ master_name }}-slave-{{ item }}"
+    register: slave_ip_address
+    with_sequence: start=1 end={{ slaves }}
+    tags:
+      - m_startup
+      - cli_startup
+
+  - name: Insert Slave details in Master's host file for hostname based resolution (Docker Network can be created and containers can be tagged for automated discovery but Ansible module for that is not mature enough till now) 
+#    command: "docker exec master-{{ master_name }} '/bin/sh -c echo {{ item.stdout }} master-{{ master_name }}-slave-{{ item }} >> /etc/hosts'"
+    command: docker exec master-1 echo ABCD >> /etc/hosts
+#    with_items:
+#      - "{{ slave_ip_address.results }}"
+    tags:
+      - m_startup
+      - cli_startup
+    
   - name: Copy SSH Keys to Master (id_rsa)
     command: docker cp /home/ansiblelabuser{{ master_name }}/.ssh/id_rsa master-{{ master_name }}:/root/.ssh/id_rsa
     tags:
