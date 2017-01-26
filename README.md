@@ -19,9 +19,18 @@ System already baselined, just startup the lab with defaults (creates 1 ansiblel
 ./ansible_lab.yml --tags=users,group,m_startup
 ```
 
+Execute the service discovery script that will modify the hosts file in the masters to discover and use the slaves via hostnames. Its a parameterized script where the number of masters and slaves can be passed as the first and second parameter respectively. Docker Network can be created and containers can be tagged for automated discovery but Ansible module for that is not mature enough till now
+```
+./utilities/service_discovery.sh
+```
+
 Scaling up: System already baselined, startup the lab the specific number of users and its respective slaves (creates 2 ansiblelabusers, 2 Masters (1 master per user) and 3 slaves per master)
 ```
 ./ansible_lab.yml --tags=users,group,m_startup -e users=2 -e slaves=3
+```
+Execute the service discovery script that will modify the hosts file in the masters to discover and use the slaves via hostnames. Its a parameterized script where the number of masters and slaves can be passed as the first and second parameter respectively. Docker Network can be created and containers can be tagged for automated discovery but Ansible module for that is not mature enough till now
+```
+./utilities/service_discovery.sh 2 3
 ```
 
 #### Getting Started: Access to the users and slaves
