@@ -1,1 +1,2 @@
-*.yml linguist-language=Ansible
+*.yml linguist-language=YAML
+Dockerfile linguist-language=Dockerfile
