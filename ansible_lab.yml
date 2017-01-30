@@ -114,6 +114,12 @@
       loop_control:
         loop_var: master_name
 
+    - name: Service discovery enabling script integrated. (Implement service discovery for the slave containers in the master container via hostnames. Docker Network can be created and containers can be tagged for automated discovery but Ansible module for that is not mature enough till now. Since shell module is used, idempotency is not there.)
+      shell: utilities/service_discovery.sh {{ users }} {{ slaves }}
+      tags:
+        - m_startup
+        - cli_startup
+
     - name: Remove ansible lab users
       user:
         name={{ item }}
