@@ -24,6 +24,7 @@
 
     - name: Backup existing SSH config
       command: cp /etc/ssh/ssh_config /etc/ssh/ssh_config_backup
+      changed_when: yes
       tags:
         - ssh
         - backup_ssh
@@ -134,4 +135,31 @@
         state=absent
       tags:
         - remove_group
+        - remove_baseline
+
+    - name: Unlock sshd_config
+      command: chattr -i /etc/ssh/sshd_config
+      changed_when: yes
+      tags:
+        - revert_ssh
+        - remove_users
+        - remove_baseline
+
+    - name: Delete ansible lab users from sshd allowedusers
+      replace:
+        dest: /etc/ssh/sshd_config
+        regexp: '{{ item }}\s?\b'
+        replace: ''
+      with_sequence: start=1 end={{ users }} format=ansiblelabuser%d
+      tags:
+        - revert_ssh
+        - remove_users
+        - remove_baseline
+
+    - name: Lock sshd_config
+      command: chattr +i /etc/ssh/sshd_config
+      changed_when: yes
+      tags:
+        - revert_ssh
+        - remove_users
         - remove_baseline
