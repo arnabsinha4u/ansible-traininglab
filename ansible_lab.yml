@@ -13,7 +13,6 @@
       yum: name={{ item }} state=present
       with_items:
         - docker
-        - python-pip
         - python-docker-py
       tags:
         - baseline
@@ -23,14 +22,7 @@
       tags:
         - baseline
 
-    - name: Backup existing SSH config
-      copy: src=/etc/ssh/ssh_config dest=/etc/ssh/ssh_config_backup
-      tags:
-        - ssh
-        - backup_ssh
-        - baseline
-
-    - name: Create group for lab users
+    - name: Create group ansiblelab
       group:
            name=ansiblelab
            state=present
@@ -38,50 +30,21 @@
         - group
         - baseline
 
-    - name: Create user, home with default password, ssh keys - loop
+    - name: Create users with loop
       user:
           name={{ item }}
-          comment={{ item }}
           password={{ item | password_hash('sha512') }}
           home=/home/{{ item }}
+          createhome=yes
           group=ansiblelab
           generate_ssh_key=yes
-          ssh_key_file=.ssh/id_rsa
-          update_password=always
           state=present
       with_sequence: start=1 end={{ users }} format=ansiblelabuser%d
       tags:
         - users
         - baseline
 
-    - name: unlock sshd_config
-      command: chattr -i /etc/ssh/sshd_config
-      changed_when: yes
-      tags:
-        - ssh
-        - users
-        - baseline
-
-    - name: insert ansible in sshd allowedusers
-      replace:
-        dest: /etc/ssh/sshd_config
-        regexp: '^(AllowUsers(?!.*\b{{ item }}\b).*)$'
-        replace: '\1 {{ item }}'
-      with_sequence: start=1 end={{ users }} format=ansiblelabuser%d
-      tags:
-        - ssh
-        - users
-        - baseline
-
-    - name: lock sshd_config
-      command: chattr +i /etc/ssh/sshd_config
-      changed_when: yes
-      tags:
-        - ssh
-        - users
-        - baseline
-
-    - name: Create Docker network for ansiblelab (limiting to 4K containers approx)
+    - name: Create Docker network for ansiblelab
       command: docker network create -d bridge --internal --subnet={{ cidr }} ansiblelab_nw
       tags:
         - docker_network
@@ -114,13 +77,13 @@
       loop_control:
         loop_var: master_name
 
-    - name: Service discovery enabling script integrated. (Implement service discovery for the slave containers in the master container via hostnames. Docker Network can be created and containers can be tagged for automated discovery but Ansible module for that is not mature enough till now. Since shell module is used, idempotency is not there.)
+    - name: Service discovery
       command: utilities/service_discovery.sh {{ users }} {{ slaves }}
       tags:
         - m_startup
         - cli_startup
 
-    - name: Remove ansible lab users
+    - name: Remove ansiblelab users
       user:
         name={{ item }}
         state=absent
@@ -131,37 +94,10 @@
         - remove_users
         - remove_baseline
 
-    - name: Remove ansible lab user group
+    - name: Remove ansiblelab group
       group:
         name=ansiblelab
         state=absent
       tags:
         - remove_group
-        - remove_baseline
-
-    - name: Unlock sshd_config
-      command: chattr -i /etc/ssh/sshd_config
-      changed_when: yes
-      tags:
-        - revert_ssh
-        - remove_users
-        - remove_baseline
-
-    - name: Delete ansible lab users from sshd allowedusers
-      replace:
-        dest: /etc/ssh/sshd_config
-        regexp: '{{ item }}\s?\b'
-        replace: ''
-      with_sequence: start=1 end={{ users }} format=ansiblelabuser%d
-      tags:
-        - revert_ssh
-        - remove_users
-        - remove_baseline
-
-    - name: Lock sshd_config
-      command: chattr +i /etc/ssh/sshd_config
-      changed_when: yes
-      tags:
-        - revert_ssh
-        - remove_users
         - remove_baseline
