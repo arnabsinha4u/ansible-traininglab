@@ -46,6 +46,7 @@
           createhome=yes
           group=ansiblelab
           generate_ssh_key=yes
+          update_password=always
           state=present
       with_sequence: start=1 end={{ users }} format=ansiblelabuser%d
       tags:
