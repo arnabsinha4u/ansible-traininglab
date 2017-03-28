@@ -22,6 +22,13 @@
       tags:
         - baseline
 
+    - name: Backup existing SSH config
+      command: cp /etc/ssh/ssh_config /etc/ssh/ssh_config_backup
+      tags:
+        - ssh
+        - backup_ssh
+        - baseline
+
     - name: Create group ansiblelab
       group:
            name=ansiblelab
@@ -41,6 +48,33 @@
           state=present
       with_sequence: start=1 end={{ users }} format=ansiblelabuser%d
       tags:
+        - users
+        - baseline
+
+    - name: unlock sshd_config
+      command: chattr -i /etc/ssh/sshd_config
+      changed_when: yes
+      tags:
+        - ssh
+        - users
+        - baseline
+
+    - name: insert ansible in sshd allowedusers
+      replace:
+        dest: /etc/ssh/sshd_config
+        regexp: '^(AllowUsers(?!.*\b{{ item }}\b).*)$'
+        replace: '\1 {{ item }}'
+      with_sequence: start=1 end={{ users }} format=ansiblelabuser%d
+      tags:
+        - ssh
+        - users
+        - baseline
+
+    - name: lock sshd_config
+      command: chattr +i /etc/ssh/sshd_config
+      changed_when: yes
+      tags:
+        - ssh
         - users
         - baseline
 
