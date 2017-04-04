@@ -1,6 +1,6 @@
 FROM centos:latest
 MAINTAINER arnabsinha4u@gmail.com 
-RUN yum -y install ansible openssh openssh-server && yum clean all
+RUN yum -y install epel-release openssh openssh-server && yum clean all
 LABEL "Running"="docker run -d -P image_name:latest"
 
 RUN mkdir /var/run/sshd ; \
