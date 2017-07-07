@@ -2,13 +2,18 @@
 # Dockerized Ansible Training Lab
 Dockerized Ansible Training Lab to train multiple people/get trained on Ansible using multiple containerized hosts
 
+### Slideshare Link:
+https://www.slideshare.net/ArnabSinha36/setting-up-your-own-ansible-workshop
+
+https://www.slideshare.net/ArnabSinha36/ansible-docker-setting-up-your-own-workshop
+
 ### How To's:
 
-####Requirements
+###Requirements
 You should have Ansible 2.2 or above. If the same is installed with dependencies, running the baseline tag will install other dependencies to run this lab.
 Details mentioned in the requirements.txt but not included in the playbook.
 
-####Starting up a lab:
+###Starting up a lab:
 Bootstrap host and Startup Lab (Default settings: creates 1 ansiblelabuser, 1 Master and 1 Slave)
 ```
 ./ansible_lab.yml --tags=baseline,m_startup
