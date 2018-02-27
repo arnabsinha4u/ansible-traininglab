@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/arnabsinha4u/ansible-traininglab.svg?branch=master)](https://travis-ci.org/arnabsinha4u/ansible-traininglab)
 # Dockerized Ansible Training Lab
-Dockerized Ansible Training Lab to train multiple people/get trained on Ansible using multiple containerized hosts
+Dockerized Ansible Training Lab to train multiple people/get trained on Ansible using multiple containerized hosts. Dynamic HTML Page creation and hosting using HTTPD showing the setup infrastructure
 
 ### Slideshare Link:
 https://www.slideshare.net/ArnabSinha36/setting-up-your-own-ansible-workshop
@@ -29,6 +29,11 @@ Execute the service discovery script that will modify the hosts file in the mast
 ./utilities/service_discovery.sh
 ```
 
+Execute the HTML page creation which will generate/modify a detailed page of the infrastructure started up
+```
+./utilities/create_html.sh
+```
+
 Scaling up: System already baselined, startup the lab the specific number of users and its respective slaves (creates 2 ansiblelabusers, 2 Masters (1 master per user) and 3 slaves per master)
 ```
 ./ansible_lab.yml --tags=users,group,m_startup -e users=2 -e slaves=3
@@ -37,6 +42,14 @@ Execute the service discovery script that will modify the hosts file in the mast
 ```
 ./utilities/service_discovery.sh 2 3
 ```
+
+For scaleup/scaledown and reflect the same in the HTML page
+```
+./utilities/create_html.sh 2 3
+```
+
+![HTMLExample](html_example.jpg)
+
 
 #### Getting Started: Access to the users and slaves
  * ansiblelabuser (always created in sequence of numbers) to login into the host as ssh ansiblelabuser1@hostname
