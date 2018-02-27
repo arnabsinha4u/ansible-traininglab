@@ -4,6 +4,9 @@
   become: yes
   gather_facts: yes
   vars:
+    logo_to_be_used: Ansible_Logo.png
+    path_of_html_and_logo : /var/www/html/
+    html_file_name: index.html
     users: 1
     slaves: 1
     cidr: "172.18.1.1/20"
@@ -12,13 +15,17 @@
     - name: Baseline Machine
       yum: name={{ item }} state=present
       with_items:
+        - httpd
         - docker
         - python-docker-py
       tags:
         - baseline
 
     - name: Start Docker Engine
-      service: name=docker state=started
+      service: name={{ item }} state=started
+      with_items:
+        - httpd
+        - docker
       tags:
         - baseline
 
@@ -115,6 +122,16 @@
 
     - name: Service discovery enabling script integrated. (Implement service discovery for the slave containers in the master container via hostnames. Docker Network can be created and containers can be tagged for automated discovery but Ansible module for that is not mature enough till now. Since shell module is used, idempotency is not there.)
       command: utilities/service_discovery.sh {{ users }} {{ slaves }}
+      tags:
+        - m_startup
+        - cli_startup
+
+    - name: Create an HTML page with all the details of the master and slaves and host it at default location (can be changed in global variables of this playbook) of HTTPD
+      command: utilities/create_html.sh {{ users }} {{ slaves }}
+      environment:
+        logo_to_be_used: "{{ logo_to_be_used }}"
+        path_of_html_and_logo: "{{ path_of_html_and_logo }}"
+        html_file_name: "{{ html_file_name }}"
       tags:
         - m_startup
         - cli_startup
