@@ -1,10 +1,6 @@
 #!/bin/bash
 
 #Variables
-#logo_to_be_used=Ansible_Logo.png
-#path_of_html_and_logo=/var/www/html/
-#html_file_name=index.html
-
 logo_to_be_used="${logo_to_be_used:-Ansible_Logo.png}"
 path_of_html_and_logo="${path_of_html_and_logo:-/var/www/html/}"
 html_file_name="${html_file_name:-index.html}"
