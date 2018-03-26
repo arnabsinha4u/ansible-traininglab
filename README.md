@@ -9,11 +9,11 @@ https://www.slideshare.net/ArnabSinha36/ansible-docker-setting-up-your-own-works
 
 ### How To's:
 
-###Requirements
+Requirements
 You should have Ansible 2.2 or above. If the same is installed with dependencies, running the baseline tag will install other dependencies to run this lab.
 Details mentioned in the requirements.txt but not included in the playbook.
 
-###Starting up a lab:
+#### Starting up a lab:
 Bootstrap host and Startup Lab (Default settings: creates 1 ansiblelabuser, 1 Master and 1 Slave)
 ```
 ./ansible_lab.yml --tags=baseline,m_startup
@@ -63,7 +63,7 @@ master-1-slave-1 for master-1 - 172.17.0.3
 master-1-slave-2 for master-1 - 172.17.0.4
 
 
-####Shutdown a running lab:
+#### Shutdown a running lab:
 Simple Shutdown of Lab (Default settings: removes 1 ansiblelabuser, 1 Master and 1 Slave)
 ```
 ./ansible_lab.yml --tags=remove_baseline,m_shutdown
@@ -94,7 +94,7 @@ Note:
   * Tags as cli_ mean those tasks are using the Command Line (CLI of Docker)
 
 
-###Available Tags:
+#### Available Tags:
 * baseline
   * Allows you to bootstrap your machine with basic dependencies of running Docker and Ansible dependencies for using the Docker module of Ansible
   * Start Docker engine
