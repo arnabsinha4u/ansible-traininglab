@@ -1,79 +1,95 @@
 [![Build Status](https://travis-ci.org/arnabsinha4u/ansible-traininglab.svg?branch=master)](https://travis-ci.org/arnabsinha4u/ansible-traininglab)
+
 # Dockerized Ansible Training Lab
+
 Dockerized Ansible Training Lab to train multiple people/get trained on Ansible using multiple containerized hosts. Dynamic HTML Page creation and hosting using HTTPD showing the setup infrastructure
 
-### Slideshare Link:
-https://www.slideshare.net/ArnabSinha36/setting-up-your-own-ansible-workshop
+## Slideshare Link
 
-https://www.slideshare.net/ArnabSinha36/ansible-docker-setting-up-your-own-workshop
+<https://www.slideshare.net/ArnabSinha36/setting-up-your-own-ansible-workshop>
 
-### How To's:
+<https://www.slideshare.net/ArnabSinha36/ansible-docker-setting-up-your-own-workshop>
+
+### How To's
 
 Requirements
 You should have Ansible 2.2 or above. If the same is installed with dependencies, running the baseline tag will install other dependencies to run this lab.
 Details mentioned in the requirements.txt but not included in the playbook.
 
-#### Starting up a lab:
+#### Starting up a lab
+
 Bootstrap host and Startup Lab (Default settings: creates 1 ansiblelabuser, 1 Master and 1 Slave)
+
 ```
 ./ansible_lab.yml --tags=baseline,m_startup
 ```
 
 System already baselined, just startup the lab with defaults (creates 1 ansiblelabuser, 1 Master and 1 Slave)
+
 ```
 ./ansible_lab.yml --tags=users,group,m_startup
 ```
 
 Execute the service discovery script that will modify the hosts file in the masters to discover and use the slaves via hostnames. Its a parameterized script where the number of masters and slaves can be passed as the first and second parameter respectively. Docker Network can be created and containers can be tagged for automated discovery but Ansible module for that is not mature enough till now
+
 ```
 ./utilities/service_discovery.sh
 ```
 
 Execute the HTML page creation which will generate/modify a detailed page of the infrastructure started up
+
 ```
 ./utilities/create_html.sh
 ```
 
 Scaling up: System already baselined, startup the lab the specific number of users and its respective slaves (creates 2 ansiblelabusers, 2 Masters (1 master per user) and 3 slaves per master)
+
 ```
 ./ansible_lab.yml --tags=users,group,m_startup -e users=2 -e slaves=3
 ```
+
 Execute the service discovery script that will modify the hosts file in the masters to discover and use the slaves via hostnames. Its a parameterized script where the number of masters and slaves can be passed as the first and second parameter respectively. Docker Network can be created and containers can be tagged for automated discovery but Ansible module for that is not mature enough till now
+
 ```
 ./utilities/service_discovery.sh 2 3
 ```
 
 For scaleup/scaledown and reflect the same in the HTML page
+
 ```
 ./utilities/create_html.sh 2 3
 ```
 
 ![HTMLExample](html_example.jpg)
 
-
 #### Getting Started: Access to the users and slaves
- * ansiblelabuser (always created in sequence of numbers) to login into the host as ssh ansiblelabuser1@hostname
- * Accept the host checking
- * Once accecpted, will be forwarded automatically into the respective master container
- * Can access the slaves by ssh IP-Address of the slaves (the IP address of the slaves will be 1 increment each to the master IP address[ifconfig on master will reveal the ip address])
+
+* ansiblelabuser (always created in sequence of numbers) to login into the host as ssh ansiblelabuser1@hostname
+* Accept the host checking
+* Once accecpted, will be forwarded automatically into the respective master container
+* Can access the slaves by ssh IP-Address of the slaves (the IP address of the slaves will be 1 increment each to the master IP address[ifconfig on master will reveal the ip address])
 
 Eg:
 master-1 ip address - 172.17.0.2
 master-1-slave-1 for master-1 - 172.17.0.3
 master-1-slave-2 for master-1 - 172.17.0.4
 
+#### Shutdown a running lab
 
-#### Shutdown a running lab:
 Simple Shutdown of Lab (Default settings: removes 1 ansiblelabuser, 1 Master and 1 Slave)
+
 ```
 ./ansible_lab.yml --tags=remove_baseline,m_shutdown
 ```
 
 Shutdown the lab with defaults (removes 1 ansiblelabuser, 1 Master and 1 Slave containers)
+
 ```
 ./ansible_lab.yml --tags=remove_users,remove_group,m_shutdown
 ```
+
 Scaling Down: Shutdown the lab partially (removes 1 ansiblelabuser, 1 Master and 2 Slave containers)
+
 ```
 ./ansible_lab.yml --tags=remove_users,m_shutdown -e users=1 -e slaves=2
 ```
@@ -81,20 +97,23 @@ Scaling Down: Shutdown the lab partially (removes 1 ansiblelabuser, 1 Master and
 Details of the Tags explained in the next section and permutation and combination of the same can be used to scale up, scale down, cleanup.
 
 Note:
-  * Users have to be created if scaling up.
-  * The count always starts with 1 while scaling up and scaling down
-  * Functionality of prefrential removal - Work In Progress (WIP)
-  * Access to slaves based on hostname - Work In Progress (WIP)
 
-### Available Functionalities:
+* Users have to be created if scaling up.
+* The count always starts with 1 while scaling up and scaling down
+* Functionality of prefrential removal - Work In Progress (WIP)
+* Access to slaves based on hostname - Work In Progress (WIP)
+
+### Available Functionalities
+
 Tags of Ansible has been leveraged to offer various kinds of functionalities to suit your requirements.
 
 Note:
-  * Tags as m_ mean those tasks are using the Ansible Docker Module (will work iff Ansible dependencies for using the Docker module of Ansible is installed)
-  * Tags as cli_ mean those tasks are using the Command Line (CLI of Docker)
 
+* Tags as m_ mean those tasks are using the Ansible Docker Module (will work iff Ansible dependencies for using the Docker module of Ansible is installed)
+* Tags as cli_ mean those tasks are using the Command Line (CLI of Docker)
 
-#### Available Tags:
+#### Available Tags
+
 * baseline
   * Allows you to bootstrap your machine with basic dependencies of running Docker and Ansible dependencies for using the Docker module of Ansible
   * Start Docker engine
@@ -119,21 +138,21 @@ Note:
 
 * group - Create a group called as ansiblelab
 * users
-  * Creates ansiblelabuser's and attach them to the group called ansiblelab (will not work if group is not created/existing)
-  * Adds them to the SSHD config
+* Creates ansiblelabuser's and attach them to the group called ansiblelab (will not work if group is not created/existing)
+* Adds them to the SSHD config
 
 * remove_users
   * Removes the ansiblelabuser's
   * Removes them from the SSHD config
-* remove_group - Removes the group called as ansiblelab
 
+* remove_group - Removes the group called as ansiblelab
 * ssh_key_exchange - Re/Initiate SSH key exchange amongst Masters and Slaves
 * ssh - Manage SSHD config to add new users if its protected by any config management tool
 * revert_ssh - Revert the SSHD config to the original state
 
 Work In Progress (WIP):
-* remove_images
 
+* remove_images
 
 ### Lab Setup Representation
 
@@ -186,9 +205,10 @@ Public keys in of the master are then copied over to their respective slave cont
 
 ```
 
+### Author details
 
-_Author: Arnab Sinha_
+Author: Arnab Sinha
 
-_Github: arnabsinha4u_
+Github: arnabsinha4u
 
-_Email: anrabsinha4u@gmail.com_
+Email: anrabsinha4u@gmail.com
