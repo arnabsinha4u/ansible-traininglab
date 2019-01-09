@@ -14,6 +14,8 @@ install:
   # Install ansible & ansible-lint
   - pip install ansible
   - pip install ansible-lint
+    # Install mdl
+  - gem install mdl
     
   # Check ansible version
   - ansible --version
@@ -21,4 +23,6 @@ install:
 script:
   # Basic role syntax check
   - ansible-playbook ansible_lab.yml --syntax-check
-  - ansible-lint -x ANSIBLE0012 ansible_lab.yml
+  - ansible-lint -x ANSIBLE0012,204 ansible_lab.yml
+  # mdlrc
+  - mdl -c .mdlrc .
