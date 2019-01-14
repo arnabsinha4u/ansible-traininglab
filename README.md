@@ -2,6 +2,14 @@
 
 [![Build Status](https://travis-ci.org/arnabsinha4u/ansible-traininglab.svg?branch=master)](https://travis-ci.org/arnabsinha4u/ansible-traininglab)
 
+Control Node:
+[![Alternate text](https://images.microbadger.com/badges/image/arnabsinha4u/ansible-traininglab-control-node.svg)](https://microbadger.com/images/arnabsinha4u/ansible-traininglab-control-node)
+[![Alternate text](https://images.microbadger.com/badges/version/arnabsinha4u/ansible-traininglab-control-node.svg)](https://microbadger.com/images/arnabsinha4u/ansible-traininglab-control-node)
+
+Managed Node:
+[![Alternate text](https://images.microbadger.com/badges/image/arnabsinha4u/ansible-traininglab-managed-node.svg)](https://microbadger.com/images/arnabsinha4u/ansible-traininglab-managed-node)
+[![Alternate text](https://images.microbadger.com/badges/version/arnabsinha4u/ansible-traininglab-managed-node.svg)](https://microbadger.com/images/arnabsinha4u/ansible-traininglab-managed-node)
+
 Dockerized Ansible Training Lab to train multiple people/get trained on Ansible using multiple containerized hosts. Dynamic HTML Page creation and hosting using HTTPD showing the setup infrastructure
 
 - [Dockerized Ansible Training Lab](#dockerized-ansible-training-lab)
