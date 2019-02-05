@@ -13,11 +13,12 @@
 
   tasks:
     - name: Baseline Machine
-      yum: name={{ item }} state=present
-      with_items:
-        - httpd
-        - docker
-        - python-docker-py
+      yum:
+        name:
+          - httpd
+          - docker
+          - python-docker-py
+        state: present
       register: task_result
       until: task_result is success
       retries: 5
