@@ -85,7 +85,7 @@
       - ssh_key_exchange
 
   - name: Remove Slave Containers (CLI)
-    command: docker stop -t=0  master-{{ master_name }}-slave-{{ item }} && docker rm -f master-{{ master_name }}-slave-{{ item }}
+    command: docker stop -t=0  master-{{ master_name }}-slave-{{ item }} && docker rm master-{{ master_name }}-slave-{{ item }}
     register: stop_slave
     failed_when:
       - "'No such container' not in stop_slave.stderr"
@@ -98,7 +98,7 @@
       - cli_shutdown
 
   - name: Remove Master Containers (CLI)
-    command: docker stop -t=0 master-{{ master_name }} && docker rm -f master-{{ master_name }}
+    command: docker stop -t=0 master-{{ master_name }} && docker rm master-{{ master_name }}
     register: stop_master
     failed_when:
       - "'No such container' not in stop_master.stderr"
