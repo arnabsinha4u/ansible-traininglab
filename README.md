@@ -35,6 +35,17 @@ Requirements
 You should have Ansible 2.2 or above. If the same is installed with dependencies, running the baseline tag will install other dependencies to run this lab.
 Details mentioned in the requirements.txt but not included in the playbook.
 
+### Optional Step Running in a VM
+
+If you have Vagrant and VirtualBox or VMware, then you can run the lab in a virtual machine with a forwarded ssh-port 2274.
+
+```sh
+vagrant up
+vagrant ssh
+sudo -s
+cd /vagrant
+```
+
 ### Starting up a lab
 
 Bootstrap host and Startup Lab (Default settings: creates 1 ansiblelabuser, 1 Master and 1 Slave)
