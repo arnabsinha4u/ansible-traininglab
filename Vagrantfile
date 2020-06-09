@@ -29,7 +29,8 @@ Vagrant.configure("2") do |config|
       ansible.compatibility_mode = "2.0"
 #      ansible.galaxy_role_file = "/vagrant/ansible/roles/requirements.yml"
 #      ansible.galaxy_roles_path = "/vagrant/ansible/galaxy_roles"
-     	ansible.playbook = "/vagrant/ansible_lab.yml"
+      ansible.playbook = "/vagrant/ansible_lab.yml"
+      ansible.tags = "baseline,m_startup"
       ansible.become = true
       ansible.verbose = "vv"
     end
